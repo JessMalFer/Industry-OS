@@ -2,7 +2,8 @@ local basalt = require("basalt")
 
 local function create(mainFrame, theme)
     local tr = require("translations")
-    local modalWindow = require("components.modal_window").create(mainFrame, theme, tr)
+    local modalWindow = require("components.modal_window") -- Cambio aquí
+    local modalWindowInstance = modalWindow.create(mainFrame, theme, tr)
     
     local gpsThread = nil
     local gpsFrame = nil
@@ -75,15 +76,44 @@ local function create(mainFrame, theme)
     local function openGPSFrame(title, x, y, w, h)
         if gpsFrame then return end
 
-        local modal = modalWindow.create(title or tr.gps_title, w or 40, h or 15, x, y)
+        local modal = modalWindowInstance.create(title or tr.gps_title, w or 40, h or 15, x, y)
         gpsFrame = modal.frame
 
-        -- Añadir botón de detener al header
-        modal.header:addButton()
-            :setSize(10, 1)
-            :setPosition("parent.w-10", 1)
-            :setText(tr.btn_stop)
+        -- Header con X para cerrar (añadimos esto)
+        local header = gpsFrame:addFrame()
+            :setSize("parent.w", 1)
+            :setPosition(1, 1)
             :setBackground(theme.headerBG)
+
+        -- Título
+        header:addLabel()
+            :setSize("parent.w-2", 1)
+            :setBackground(theme.headerBG)
+            :setForeground(theme.headerFG)
+            :setText(title or tr.gps_title)
+
+        -- Botón X para cerrar (aseguramos que esté visible)
+        header:addButton()
+            :setSize(1, 1)
+            :setText("X")
+            :setBackground(theme.headerBG)
+            :setForeground(theme.error)
+            :setPosition("parent.w", 1)
+            :onClick(function()
+                if gpsThread then
+                    gpsThread:stop()
+                    gpsThread = nil
+                end
+                gpsFrame:remove()
+                gpsFrame = nil
+            end)
+
+        -- Botón de detener (moverlo abajo del header)
+        gpsFrame:addButton()
+            :setSize(10, 1)
+            :setPosition("parent.w-11", 2)
+            :setText(tr.btn_stop)
+            :setBackground(theme.buttonBG)
             :setForeground(theme.error)
             :onClick(function()
                 if gpsThread then
@@ -96,7 +126,7 @@ local function create(mainFrame, theme)
                 end
             end)
 
-        -- Crear un hilo para ejecutar la deteccion y conexion en segundo plano
+        -- Crear un hilo para ejecutar la detección y conexión en segundo plano
         gpsThread = gpsFrame:addThread()
         gpsThread:start(function()
             detectAndConnectGPS(gpsFrame)
