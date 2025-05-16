@@ -2,36 +2,33 @@
 
 Sistema operativo basado en CC:Tweaked utilizando Basalt2 como framework de UI.
 
+## Estructura del Proyecto
+```
+SPACE OS/
+├── components/
+│   ├── loading_screen.lua
+│   └── modal_window.lua
+├── screens/
+│   ├── menu_gps.lua
+│   ├── menu_initial.lua
+│   ├── menu_main.lua
+│   ├── menu_periph.lua
+│   └── menu_users.lua
+├── installer.lua
+├── periph.lua
+├── startup.lua
+├── theme.lua
+├── translations.lua
+└── README.md
+```
+
 ## Instalación
 
-### Método 1: Instalación directa
-En el shell de tu ordenador de CC:Tweaked, prueba uno de estos comandos:
+En tu ordenador de CC:Tweaked, ejecuta:
 
 ```lua
 wget run https://raw.githubusercontent.com/JessMalFer/Industry-OS/main/installer.lua
 ```
-
-Si el comando anterior falla, intenta:
-
-```lua
-pastebin get 4qmPG7gQ installer
-```
-
-### Solución de problemas
-
-Si los comandos anteriores no funcionan:
-
-1. Verifica que tu ordenador tenga acceso a Internet
-2. Asegúrate de que el módem inalámbrico esté conectado
-3. Ejecuta `help wget` para verificar que el comando está disponible
-4. Intenta reiniciar el ordenador
-
-### Instalación manual
-
-1. Descarga `installer.lua` de GitHub
-2. Copia el contenido en un archivo nuevo usando el editor
-3. Guárdalo como `installer`
-4. Ejecuta `installer`
 
 ## Características
 
@@ -42,9 +39,7 @@ Si los comandos anteriores no funcionan:
 - 🎨 Temas personalizables
 - 🌍 Soporte multiidioma
 
-## Soporte
-
-Si tienes problemas con la instalación:
-1. Abre un issue en GitHub
-2. Incluye el mensaje de error que aparece
-3. Describe tu configuración (tipo de ordenador, periféricos, etc)
+## Requisitos
+- CC:Tweaked
+- Módem inalámbrico (para instalación)
+- Basalt 2.0 (se instala automáticamente)
