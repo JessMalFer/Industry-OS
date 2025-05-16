@@ -1,4 +1,8 @@
-local function create(mainFrame, theme, menuUsers, menuMain, usuarios, guardarUsuarios)
+local basalt = require("basalt")
+local menuUsers = require("screens.menu_users")
+local menuMain = require("screens.menu_main")
+
+local function create(mainFrame, theme, currentUser, menuMain, usuarios, guardarUsuarios)
   -- Cargar traducciones
   local tr = require("translations")
 
@@ -43,7 +47,6 @@ local function create(mainFrame, theme, menuUsers, menuMain, usuarios, guardarUs
 
   createButton(tr.btn_login, 1, function()
       initialFrame:remove()
-      -- Verificar y llamar a la funcion correspondiente
       if menuUsers and menuUsers.createLoginMenu then
           menuUsers.createLoginMenu(mainFrame, theme, usuarios, guardarUsuarios, create)
       else
@@ -51,7 +54,7 @@ local function create(mainFrame, theme, menuUsers, menuMain, usuarios, guardarUs
       end
   end)
 
-  createButton(tr.btn_create_user, 7, function()
+  local createUserButton = createButton(tr.btn_create_user, 7, function()
       initialFrame:remove()
       -- Verificar y llamar a la funcion correspondiente
       if menuUsers and menuUsers.createUserMenu then
@@ -59,6 +62,11 @@ local function create(mainFrame, theme, menuUsers, menuMain, usuarios, guardarUs
       else
           error(tr.sys_error_user_function)
       end
+  end)
+
+  createUserButton:onClick(function()
+      initialFrame:remove()
+      menuUsers.createUserMenu(mainFrame, theme, usuarios, guardarUsuarios, create)
   end)
 
   createButton(tr.btn_settings, 13, function()
