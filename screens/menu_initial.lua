@@ -6,6 +6,26 @@ local function create(mainFrame, theme, currentUser, menuMain, usuarios, guardar
   -- Cargar traducciones
   local tr = require("translations")
 
+  -- Cargar usuarios al inicio
+  local usuarios = {}
+  if fs.exists("usuarios.db") then
+    local file = fs.open("usuarios.db", "r")
+    if file then
+      local data = file.readAll()
+      file.close()
+      usuarios = textutils.unserialize(data) or {}
+    end
+  end
+
+  -- Función para guardar usuarios
+  local function guardarUsuarios()
+    local file = fs.open("usuarios.db", "w")
+    if file then
+      file.write(textutils.serialize(usuarios))
+      file.close()
+    end
+  end
+
   local initialFrame = mainFrame:addScrollableFrame()
   initialFrame:setPosition(1, 1)
   initialFrame:setSize("parent.w", "parent.h")
