@@ -1,53 +1,64 @@
 -- Instalador de SPACE OS
--- Descarga todos los archivos necesarios desde GitHub
+-- Versión: 1.0.0
 
+-- URLs y archivos necesarios
+local baseURL = "https://raw.githubusercontent.com/JessMalFer/Industry-OS/main/"
+local files = {
+    ["startup.lua"] = "startup.lua",
+    ["theme.lua"] = "theme.lua",
+    ["translations.lua"] = "translations.lua",
+    ["periph.lua"] = "periph.lua",
+    ["components/loading_screen.lua"] = "components/loading_screen.lua",
+    ["components/modal_window.lua"] = "components/modal_window.lua",
+    ["screens/menu_gps.lua"] = "screens/menu_gps.lua",
+    ["screens/menu_initial.lua"] = "screens/menu_initial.lua",
+    ["screens/menu_main.lua"] = "screens/menu_main.lua",
+    ["screens/menu_periph.lua"] = "screens/menu_periph.lua",
+    ["screens/menu_users.lua"] = "screens/menu_users.lua"
+}
+
+-- Función para descargar archivos
 local function download(url, file)
-    local content = http.get(url)
-    if content then
+    print("Descargando " .. file .. "...")
+    local response = http.get(url)
+    if response then
         local handle = fs.open(file, "w")
-        handle.write(content.readAll())
+        handle.write(response.readAll())
         handle.close()
-        content.close()
+        response.close()
+        print("✓ " .. file)
         return true
     end
+    printError("× Error descargando " .. file)
     return false
 end
 
--- URLs base (reemplazar con tu repositorio)
-local baseURL = "https://raw.githubusercontent.com/JessMalFer/Industry-OS/main/"
+-- Crear directorios necesarios
+print("=== Instalando SPACE OS ===")
+print("Creando directorios...")
+fs.makeDir("components")
+fs.makeDir("screens")
 
--- Archivos principales
-local files = {
-    ["startup.lua"] = baseURL .. "startup.lua",
-    ["screens/menu_initial.lua"] = baseURL .. "screens/menu_initial.lua",
-    ["screens/menu_users.lua"] = baseURL .. "screens/menu_users.lua",
-    ["screens/menu_main.lua"] = baseURL .. "screens/menu_main.lua",
-    -- ...resto de archivos...
-}
-
-print("Instalando SPACE OS...")
-print("=====================")
-
--- Descargar Basalt si no existe
+-- Instalar Basalt primero
 if not fs.exists("basalt") then
-    print("Instalando Basalt...")
+    print("\nInstalando Basalt...")
     shell.run("wget run https://raw.githubusercontent.com/Pyroxenium/Basalt/master/docs/install.lua source")
 end
 
--- Crear directorios necesarios
-fs.makeDir("screens")
-fs.makeDir("components")
-
--- Descargar archivos
-for path, url in pairs(files) do
-    print("Descargando " .. path .. "...")
-    if download(url, path) then
-        print("✓ OK")
-    else
-        printError("× Error descargando " .. path)
-        return
+-- Descargar archivos del proyecto
+print("\nDescargando archivos...")
+local allSuccess = true
+for path, filename in pairs(files) do
+    if not download(baseURL .. filename, path) then
+        allSuccess = false
+        break
     end
 end
 
-print("\nInstalación completada!")
-print("Reinicia el ordenador para iniciar SPACE OS")
+if allSuccess then
+    print("\n¡Instalación completada!")
+    print("Reinicia el ordenador para iniciar SPACE OS")
+else
+    printError("\nLa instalación no se completó correctamente")
+    print("Por favor, verifica tu conexión e inténtalo de nuevo")
+end
