@@ -61,10 +61,10 @@ periphThread:start(function()
     end
 end)
 
--- Cargar modulos
-local menuInitial = require("menu_initial")  -- Menu inicial
-local menuUsers = require("menu_users") -- Gestion de usuarios
-local menuMain = require("menu_main") -- Menu principal
+-- Cargar los módulos con las rutas correctas
+local menuInitial = require("screens.menu_initial")
+local menuUsers = require("screens.menu_users")
+local menuMain = require("screens.menu_main")
 
 -- Tamano de pantalla
 local screenW, screenH = term.getSize()
