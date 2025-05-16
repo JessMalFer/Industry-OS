@@ -1,5 +1,5 @@
 local basalt = require("basalt")
-local peripheralMenu = require("menu_periph") -- Importar el modulo de perifericos
+local peripheralMenu = require("screens.menu_periph") -- Cambio aquí
 local peripheralManager = require("periph") -- Importar el gestor de perifericos
 
 local function create(mainFrame, theme)
@@ -52,7 +52,7 @@ local function create(mainFrame, theme)
                     peripheralManager.detect()
                     peripheralMenuInstance.toggleVisibility()
                 elseif lastSelectedOption == tr.menu_gps then
-                    local menuGPS = require("menu_gps").create(monitorFrame, theme) -- Pasar theme al modulo GPS
+                    local menuGPS = require("screens.menu_gps").create(monitorFrame, theme) -- Cambio aquí
                     menuGPS.openGPSFrame(tr.gps_title, nil, nil, 40, 15)
                 elseif lastSelectedOption == tr.menu_shutdown then
                     os.shutdown()
