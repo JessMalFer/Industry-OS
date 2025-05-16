@@ -13,26 +13,16 @@ local function download(url, file)
     return false
 end
 
--- Crear directorios
-fs.makeDir("components")
-fs.makeDir("screens")
-
 -- URLs base (reemplazar con tu repositorio)
 local baseURL = "https://raw.githubusercontent.com/JessMalFer/Industry-OS/main/"
 
 -- Archivos principales
 local files = {
-    "startup.lua",
-    "theme.lua",
-    "translations.lua",
-    "periph.lua",
-    "components/loading_screen.lua",
-    "components/modal_window.lua",
-    "screens/menu_gps.lua",
-    "screens/menu_initial.lua",
-    "screens/menu_main.lua", -- Añadir
-    "screens/menu_periph.lua", -- Añadir
-    "screens/menu_users.lua"
+    ["startup.lua"] = baseURL .. "startup.lua",
+    ["screens/menu_initial.lua"] = baseURL .. "screens/menu_initial.lua",
+    ["screens/menu_users.lua"] = baseURL .. "screens/menu_users.lua",
+    ["screens/menu_main.lua"] = baseURL .. "screens/menu_main.lua",
+    -- ...resto de archivos...
 }
 
 print("Instalando SPACE OS...")
@@ -44,13 +34,17 @@ if not fs.exists("basalt") then
     shell.run("wget run https://raw.githubusercontent.com/Pyroxenium/Basalt/master/docs/install.lua source")
 end
 
+-- Crear directorios necesarios
+fs.makeDir("screens")
+fs.makeDir("components")
+
 -- Descargar archivos
-for _, file in ipairs(files) do
-    print("Descargando " .. file .. "...")
-    if download(baseURL .. file, file) then
-        print("OK")
+for path, url in pairs(files) do
+    print("Descargando " .. path .. "...")
+    if download(url, path) then
+        print("✓ OK")
     else
-        print("Error descargando " .. file)
+        printError("× Error descargando " .. path)
         return
     end
 end
