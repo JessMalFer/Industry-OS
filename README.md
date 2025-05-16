@@ -6,7 +6,6 @@ Sistema operativo basado en CC:Tweaked utilizando Basalt2 como framework de UI.
 ```
 SPACE OS/
 ├── components/
-│   ├── loading_screen.lua
 │   └── modal_window.lua
 ├── screens/
 │   ├── menu_gps.lua
