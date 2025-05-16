@@ -1,26 +1,6 @@
--- Instalador de SPACE OS
--- Descarga todos los archivos necesarios desde GitHub
+-- Instalador de SPACE OS desde GitHub
 
-local function download(url, file)
-    local content = http.get(url)
-    if content then
-        local handle = fs.open(file, "w")
-        handle.write(content.readAll())
-        handle.close()
-        content.close()
-        return true
-    end
-    return false
-end
-
--- Crear directorios
-fs.makeDir("components")
-fs.makeDir("screens")
-
--- URLs base (reemplazar con tu repositorio)
-local baseURL = "https://raw.githubusercontent.com/TU_USUARIO/space-os/main/"
-
--- Archivos principales
+local baseURL = "https://raw.githubusercontent.com/JessMalFer/Industry-OS/main/"
 local files = {
     "startup.lua",
     "theme.lua",
@@ -33,25 +13,39 @@ local files = {
     "screens/menu_users.lua"
 }
 
-print("Instalando SPACE OS...")
-print("=====================")
+-- Función para descargar archivos
+local function download(url, file)
+    print("Descargando " .. file .. "...")
+    local response = http.get(url)
+    if response then
+        local handle = fs.open(file, "w")
+        handle.write(response.readAll())
+        handle.close()
+        response.close()
+        return true
+    end
+    return false
+end
 
--- Descargar Basalt si no existe
+-- Crear directorios necesarios
+print("Creando directorios...")
+fs.makeDir("components")
+fs.makeDir("screens")
+
+-- Instalar Basalt si no existe
 if not fs.exists("basalt") then
     print("Instalando Basalt...")
     shell.run("wget run https://raw.githubusercontent.com/Pyroxenium/Basalt/master/docs/install.lua source")
 end
 
--- Descargar archivos
+-- Descargar archivos del proyecto
+print("Descargando archivos del proyecto...")
 for _, file in ipairs(files) do
-    print("Descargando " .. file .. "...")
-    if download(baseURL .. file, file) then
-        print("OK")
-    else
-        print("Error descargando " .. file)
+    if not download(baseURL .. file, file) then
+        printError("Error descargando " .. file)
         return
     end
 end
 
-print("\nInstalación completada!")
+print("\n¡Instalación completada!")
 print("Reinicia el ordenador para iniciar SPACE OS")
