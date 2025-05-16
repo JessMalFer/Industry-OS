@@ -8,7 +8,6 @@ local files = {
     ["theme.lua"] = "theme.lua",
     ["translations.lua"] = "translations.lua",
     ["periph.lua"] = "periph.lua",
-    ["components/loading_screen.lua"] = "components/loading_screen.lua",
     ["components/modal_window.lua"] = "components/modal_window.lua",
     ["screens/menu_gps.lua"] = "screens/menu_gps.lua",
     ["screens/menu_initial.lua"] = "screens/menu_initial.lua",
