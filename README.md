@@ -1,4 +1,4 @@
-# SPACE OS
+[# SPACE OS
 
 Sistema operativo basado en CC:Tweaked utilizando Basalt2 como framework de UI.
 
@@ -18,4 +18,4 @@ installer
 - 🔌 Gestión de periféricos
 - 👤 Sistema de usuarios
 - 🎨 Temas personalizables
-- 🌍 Soporte multiidioma
+- 🌍 Soporte multiidioma](https://github.com/JessMalFer/Industry-OS.git)
