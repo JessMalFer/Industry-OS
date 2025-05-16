@@ -1,6 +1,26 @@
--- Instalador de SPACE OS desde GitHub
+-- Instalador de SPACE OS
+-- Descarga todos los archivos necesarios desde GitHub
 
+local function download(url, file)
+    local content = http.get(url)
+    if content then
+        local handle = fs.open(file, "w")
+        handle.write(content.readAll())
+        handle.close()
+        content.close()
+        return true
+    end
+    return false
+end
+
+-- Crear directorios
+fs.makeDir("components")
+fs.makeDir("screens")
+
+-- URLs base (reemplazar con tu repositorio)
 local baseURL = "https://raw.githubusercontent.com/JessMalFer/Industry-OS/main/"
+
+-- Archivos principales
 local files = {
     "startup.lua",
     "theme.lua",
@@ -10,42 +30,30 @@ local files = {
     "components/modal_window.lua",
     "screens/menu_gps.lua",
     "screens/menu_initial.lua",
+    "screens/menu_main.lua", -- Añadir
+    "screens/menu_periph.lua", -- Añadir
     "screens/menu_users.lua"
 }
 
--- Función para descargar archivos
-local function download(url, file)
-    print("Descargando " .. file .. "...")
-    local response = http.get(url)
-    if response then
-        local handle = fs.open(file, "w")
-        handle.write(response.readAll())
-        handle.close()
-        response.close()
-        return true
-    end
-    return false
-end
+print("Instalando SPACE OS...")
+print("=====================")
 
--- Crear directorios necesarios
-print("Creando directorios...")
-fs.makeDir("components")
-fs.makeDir("screens")
-
--- Instalar Basalt si no existe
+-- Descargar Basalt si no existe
 if not fs.exists("basalt") then
     print("Instalando Basalt...")
     shell.run("wget run https://raw.githubusercontent.com/Pyroxenium/Basalt/master/docs/install.lua source")
 end
 
--- Descargar archivos del proyecto
-print("Descargando archivos del proyecto...")
+-- Descargar archivos
 for _, file in ipairs(files) do
-    if not download(baseURL .. file, file) then
-        printError("Error descargando " .. file)
+    print("Descargando " .. file .. "...")
+    if download(baseURL .. file, file) then
+        print("OK")
+    else
+        print("Error descargando " .. file)
         return
     end
 end
 
-print("\n¡Instalación completada!")
+print("\nInstalación completada!")
 print("Reinicia el ordenador para iniciar SPACE OS")
