@@ -77,7 +77,7 @@ local function createUserMenu(mainFrame, theme, usuarios, guardarUsuarios, menuI
               table.insert(usuarios, {nombre = username, contrasena = password})
               guardarUsuarios()
               userMenu:remove()
-              local menuMain = require("menu_main")
+              local menuMain = require("screens.menu_main")
               menuMain.create(mainFrame, theme)
           end
       end
@@ -93,7 +93,7 @@ local function createUserMenu(mainFrame, theme, usuarios, guardarUsuarios, menuI
   returnButton:setBorder(theme.borderNormal) -- Borde del tema
   returnButton:onClick(function()
       userMenu:remove()
-      menuInitial(mainFrame, theme, require("menu_users"), require("menu_main"), usuarios, guardarUsuarios)
+      menuInitial(mainFrame, theme, nil, require("screens.menu_main"), usuarios, guardarUsuarios)
   end)
 end
 
@@ -181,7 +181,7 @@ local function createLoginMenu(mainFrame, theme, usuarios, guardarUsuarios, menu
           os.sleep(1)
 
           loginMenu:remove()
-          local menuMain = require("menu_main")
+          local menuMain = require("screens.menu_main")
           menuMain.create(mainFrame, theme)
       else
           errorMessage:setText(tr.msg_invalid_credentials)
@@ -198,11 +198,11 @@ local function createLoginMenu(mainFrame, theme, usuarios, guardarUsuarios, menu
   returnButton:setBorder(theme.borderNormal) -- Borde del tema
   returnButton:onClick(function()
       loginMenu:remove()
-      menuInitial(mainFrame, theme, require("menu_users"), require("menu_main"), usuarios, guardarUsuarios)
+      menuInitial(mainFrame, theme, nil, require("screens.menu_main"), usuarios, guardarUsuarios)
   end)
 end
 
 return {
-  createUserMenu = createUserMenu,
-  createLoginMenu = createLoginMenu
+    createUserMenu = createUserMenu,
+    createLoginMenu = createLoginMenu
 }
